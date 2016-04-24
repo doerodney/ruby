@@ -2,7 +2,7 @@ require './cell'
 require 'set'
 
 class SudokuBoard
-  attr_reader :count_columns, :count_rows, :order
+  attr_reader :count_columns, :count_rows, :full_set, :order
 
   def initialize(order = 2, mtrx = [
       1, 3, 4, 2,
@@ -14,13 +14,28 @@ class SudokuBoard
     cells_per_side = @order * @order
     @count_columns = cells_per_side
     @count_rows = cells_per_side
+    full_set_values = []
+    1.upto(cells_per_side).each do |value| full_set_values.push(value) end
+    @full_set = full_set_values.to_set
     @cells = []
+    @cell_regions = []
+    @region_cell_dict = Hash.new([])
+    @region_dict = Hash.new(-1)
     i = 0
     cells_per_side.times do |row|
       cells_per_side.times do |column|
+        # Create a Cell object and store it in an array.
         value = mtrx[i]
         cell = Cell.new(row, column, value)
         @cells.push(cell)
+
+        # Get the region of the cell and store it in a hash, since this will
+        # be a frequent lookup task.
+        # Key = region, Value = array of index values.
+        cell_region = self.region(row, column)
+        @region_cell_dict[cell_region].push(i)
+        puts "row, column, index, region = #{row}, #{column}, #{i}, #{cell_region}"
+
         i += 1
       end
     end
@@ -61,6 +76,17 @@ class SudokuBoard
     end
 
     values.sort
+  end
+
+  def region(row, column)
+    region = column/@order + @order * (row/@order)
+
+    region
+  end
+
+  def region_cell_indices(region)
+    indices = @region_cell_dict[region]
+    indices
   end
 
   def row_set(row)
