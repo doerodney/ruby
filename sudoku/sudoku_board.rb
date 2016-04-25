@@ -44,7 +44,7 @@ class SudokuBoard
         # Key = region, Value = array of index values.
         region = self.region(row, column)
         @region_cell_dict[region].push(i)
-        puts "row, column, index, region = #{row}, #{column}, #{i}, #{region}"
+        # puts "row, column, index, region = #{row}, #{column}, #{i}, #{region}"
         i += 1
       end
     end
