@@ -19,8 +19,18 @@ class SudokuBoard
     @full_set = full_set_values.to_set
     @cells = []
     @cell_regions = []
+
+    # Create a hash to map cell indices to a region.
     @region_cell_dict = Hash.new([])
-    @region_dict = Hash.new(-1)
+    region = 0
+    (0...order).each do |row|
+      (0...order).each do |column|
+        @region_cell_dict[region] = []
+        region += 1
+      end
+    end
+
+    # Read cell values from the matrix argument.
     i = 0
     cells_per_side.times do |row|
       cells_per_side.times do |column|
@@ -32,10 +42,9 @@ class SudokuBoard
         # Get the region of the cell and store it in a hash, since this will
         # be a frequent lookup task.
         # Key = region, Value = array of index values.
-        cell_region = self.region(row, column)
-        @region_cell_dict[cell_region].push(i)
-        puts "row, column, index, region = #{row}, #{column}, #{i}, #{cell_region}"
-
+        region = self.region(row, column)
+        @region_cell_dict[region].push(i)
+        puts "row, column, index, region = #{row}, #{column}, #{i}, #{region}"
         i += 1
       end
     end

@@ -36,6 +36,11 @@ class SudokuBoardTest < Minitest::Test
     assert_equal(3, @default_board.region(2,3))
     assert_equal(3, @default_board.region(3,2))
     assert_equal(3, @default_board.region(3,3))
+
+    assert_equal([0,1,4,5], @default_board.region_cell_indices(0))
+    assert_equal([2,3,6,7], @default_board.region_cell_indices(1))
+    assert_equal([8,9,12,13], @default_board.region_cell_indices(2))
+    assert_equal([10,11,14,15], @default_board.region_cell_indices(3))
   end
 
   def test_defined_board
@@ -73,6 +78,8 @@ class SudokuBoardTest < Minitest::Test
     assert_equal(8, @defined_board.region(8,6))
     assert_equal(8, @defined_board.region(8,7))
     assert_equal(8, @defined_board.region(8,8))
+
+
   end
 
   def test_column_values
@@ -87,9 +94,9 @@ class SudokuBoardTest < Minitest::Test
     assert_equal([1, 2], values)
   end
 
-  def xtest_new
-    assert_equal([0,1,4,5], @default_board.region_cell_indices(0))
-    assert_equal([10,11,14,15], @default_board.region_cell_indices(3))
+  def test_new
+    assert_equal([0,1,2,9,10,11,18,19,20], @defined_board.region_cell_indices(0))
+    assert_equal([60,61,62,69,70,71,78,79,80], @defined_board.region_cell_indices(8))
   end
 
 end
