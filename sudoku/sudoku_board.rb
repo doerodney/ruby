@@ -36,13 +36,14 @@ class SudokuBoard
       cells_per_side.times do |column|
         # Create a Cell object and store it in an array.
         value = mtrx[i]
+        region = self.region(row, column)
         cell = Cell.new(row, column, value)
         @cells.push(cell)
+        @cell_regions.push(region)
 
-        # Get the region of the cell and store it in a hash, since this will
+        # Store the region of the cell and in a hash, since this will
         # be a frequent lookup task.
         # Key = region, Value = array of index values.
-        region = self.region(row, column)
         @region_cell_dict[region].push(i)
         # puts "row, column, index, region = #{row}, #{column}, #{i}, #{region}"
         i += 1
@@ -53,6 +54,12 @@ class SudokuBoard
   def cell_index(row, column)
     idx = row * @count_columns + column
     return idx
+  end
+
+  def cell_region(row,column)
+    i = cell_index(row, column)
+    region = @cell_regions[i]
+    region
   end
 
   def cell_value(row, column)
@@ -96,6 +103,20 @@ class SudokuBoard
   def region_cell_indices(region)
     indices = @region_cell_dict[region]
     indices
+  end
+
+  def region_set(region)
+    values = []
+    indices = @region_cell_dict[region]
+    indices.each do |i|
+      cell = @cells[i]
+      value = cell.value
+      unless value.nil?
+        values.push(value)
+      end
+    end
+
+    values.to_set
   end
 
   def row_set(row)

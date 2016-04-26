@@ -97,6 +97,7 @@ class SudokuBoardTest < Minitest::Test
   def test_new
     assert_equal([0,1,2,9,10,11,18,19,20], @defined_board.region_cell_indices(0))
     assert_equal([60,61,62,69,70,71,78,79,80], @defined_board.region_cell_indices(8))
+    assert_equal( [1,2,3,7].to_set, @defined_board.region_set(0))
   end
 
 end
