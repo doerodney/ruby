@@ -10,13 +10,18 @@ class SudokuBoard
       nil, nil, 3, nil,
       2, nil, nil, 4
   ])
+    # Capture board geometry.
     @order = order
     cells_per_side = @order * @order
     @count_columns = cells_per_side
     @count_rows = cells_per_side
+
+    # Calculate the values in a full set (typically 1..9)
     full_set_values = []
     1.upto(cells_per_side).each do |value| full_set_values.push(value) end
     @full_set = full_set_values.to_set
+
+    # Initialize cells and regions.
     @cells = []
     @cell_regions = []
 
@@ -41,7 +46,7 @@ class SudokuBoard
         @cells.push(cell)
         @cell_regions.push(region)
 
-        # Store the region of the cell and in a hash, since this will
+        # Store the region of the cell in a hash, since this will
         # be a frequent lookup task.
         # Key = region, Value = array of index values.
         @region_cell_dict[region].push(i)
